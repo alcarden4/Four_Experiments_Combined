@@ -2,7 +2,7 @@
  * Created by Anna Cardenas on 6/16/16.
  * Code based from Yuval Hart.
  */
-/** Triangle experiment with triangle of base length factor of .2 and angle 60. */
+/** Experiment for ONE TRIANGLE: Base length of 1 and Angle degree of 45.  */
 
 Global_info = {};
 Global_info.start = Date.now();
@@ -51,7 +51,7 @@ var bigger_smaller = " get bigger, get smaller, or stay the same size?".italics(
 var upward_downward = " move up, move down, or stay in the same place?".italics();
 var angleSize = "angle size ".bold();
 var topCorner = "top corner ".bold();
-var Location = "location ".bold();
+var Location = "location ".bold(); // added
 
 var Questions = [
 "Imagine we " + increase + "the " + angleSize + "of the bottom two corners by 20%. Will the " + angleSize + "of"
@@ -80,7 +80,7 @@ var Questions = [
 
 var Answers = ["smaller", "bigger", "same", "same", "upward", "downward", "upward", "downward"];
 
-//Create a Random array of runs for this subject, runs #'s go from 1-10
+//Create a Random array of runs for this subject, runs #'s go from 1-8
 RunNumOrder = getRandomArray(_.range(0, Global_info.TotRuns), Global_info.TotRuns);
 
 // A function that shuffles the array
@@ -106,7 +106,7 @@ function trainTriangle() {
     // drawing the triangle
     //parameters of the run:
     var LengthAngleSideOrig = 100;
-    var AngleOrig = Math.PI / 4; //Size of angle in radians - 45 deg
+    var AngleOrig = Math.PI / 5; //Size of angle in radians - 36 deg
     var LengthBaseOrig = 600; //Max Base Length
     var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
     var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
@@ -153,7 +153,7 @@ function trainTriangle() {
 
     IncrAng = function () {
         paper2.clear();
-        TriSideYLengthUp = Math.tan(Math.PI / 3) * LengthAngleSideOrig * BaseLengthFactor;
+        TriSideYLengthUp = Math.tan(Math.PI / 4) * LengthAngleSideOrig * BaseLengthFactor;
         DrawTestTriangle(TriBaseXStart, TriBaseXEnd, TriBaseYPos, TriSideXLengthIn, TriSideYLengthUp);
         TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
 
@@ -183,8 +183,8 @@ function drawTriangle() {
 
     var paper = Snap("#triangle").attr({width: "1500", height: "1000"});
 
-    var TriBaseLength = .2;
-    var TriBaseAngle = Math.PI / 3;
+    var TriBaseLength = 1;
+    var TriBaseAngle = Math.PI / 4;
     var dist = function (pt1, pt2) {
         var dx = pt1.x - pt2.x;
         var dy = pt1.y - pt2.y;
@@ -194,7 +194,7 @@ function drawTriangle() {
     // drawing the triangle
     //parameters of the run:
     var LengthAngleSideOrig = 100;
-    var AngleOrig = TriBaseAngle; //Size of angle in radians
+    var AngleOrig = TriBaseAngle;
     /** Gets question from array of questions. */
     Global_info.QuestionNum = Global_info.angleRunNum;
     /** Question is a string of the actual question */
@@ -369,6 +369,7 @@ function submit_demographis() {
         alert("Please enter a number value for age and education.");
         return none;
     }
+
     else {
         sendRequestPost('gender', gender);
         sendRequestPost('age', age);

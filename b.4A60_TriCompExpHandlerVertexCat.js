@@ -2,8 +2,7 @@
  * Created by Anna Cardenas on 6/16/16.
  * Code based from Yuval Hart.
  */
-
-/** Triangle experiment with triangle of base length factor of 1 and angle 30. */
+/** Experiment for ONE TRIANGLE: Base length of .4 and Angle degree of 60.  */
 
 Global_info = {};
 Global_info.start = Date.now();
@@ -81,7 +80,7 @@ var Questions = [
 
 var Answers = ["smaller", "bigger", "same", "same", "upward", "downward", "upward", "downward"];
 
-//Create a Random array of runs for this subject, runs #'s go from 1-10
+//Create a Random array of runs for this subject, runs #'s go from 1-8
 RunNumOrder = getRandomArray(_.range(0, Global_info.TotRuns), Global_info.TotRuns);
 
 // A function that shuffles the array
@@ -107,11 +106,11 @@ function trainTriangle() {
     // drawing the triangle
     //parameters of the run:
     var LengthAngleSideOrig = 100;
-    var AngleOrig = Math.PI / 4; //Size of angle in radians - 45 degrees
+    var AngleOrig = Math.PI / 5; //Size of angle in radians - 36 deg
     var LengthBaseOrig = 600; //Max Base Length
     var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
     var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
-    var BaseLengthFactor = .7;
+    var BaseLengthFactor = 0.7;
     var BaseLength = LengthBaseOrig * BaseLengthFactor;
     var TriBaseXStart = TriBaseXStartOrig + 0.5 * (1 - BaseLengthFactor) * LengthBaseOrig;
     var TriBaseXEnd = TriBaseXStart + BaseLength;
@@ -154,7 +153,7 @@ function trainTriangle() {
 
     IncrAng = function () {
         paper2.clear();
-        TriSideYLengthUp = Math.tan(Math.PI / 3) * LengthAngleSideOrig * BaseLengthFactor;
+        TriSideYLengthUp = Math.tan(Math.PI / 4) * LengthAngleSideOrig * BaseLengthFactor;
         DrawTestTriangle(TriBaseXStart, TriBaseXEnd, TriBaseYPos, TriSideXLengthIn, TriSideYLengthUp);
         TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
 
@@ -184,8 +183,8 @@ function drawTriangle() {
 
     var paper = Snap("#triangle").attr({width: "1500", height: "1000"});
 
-    var TriBaseLength = 1;
-    var TriBaseAngle = Math.PI / 6;
+    var TriBaseLength = 0.4;
+    var TriBaseAngle = Math.PI / 3;
     var dist = function (pt1, pt2) {
         var dx = pt1.x - pt2.x;
         var dy = pt1.y - pt2.y;
@@ -370,6 +369,7 @@ function submit_demographis() {
         alert("Please enter a number value for age and education.");
         return none;
     }
+
     else {
         sendRequestPost('gender', gender);
         sendRequestPost('age', age);
@@ -536,7 +536,7 @@ function onNext() {
         var timeRound = Global_info.end - Global_info.start;
         var logInfo = 'Run' + Global_info.curPage + '_' + Global_info.setup + '_Time_' + timeRound + '_UserResponse_'
             + Global_info.userResponse;
-        //alert(logInfo)
+        // alert(logInfo); //me
         sendRequestPost('data', logInfo);
         Global_info.start = Date.now();
 

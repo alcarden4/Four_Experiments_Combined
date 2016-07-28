@@ -44,10 +44,10 @@ function outputResponse(loader){
 }
 function sendRequestGet(){
 	if(!document.getElementById('sync').checked){
-		dhtmlxAjax.get("php/b.2A30_processVertexCat.php?"+encodeURI(document.getElementById('params').value),outputResponse);
+		dhtmlxAjax.get("php/b.4A60_processVertexCat.php?"+encodeURI(document.getElementById('params').value),outputResponse);
 		alert("Request Sent");
 	}else{
-		var loader = dhtmlxAjax.getSync("php/b.2A30_processVertexCat.php?"+encodeURI(document.getElementById('params').value));
+		var loader = dhtmlxAjax.getSync("php/b.4A60_processVertexCat.php?"+encodeURI(document.getElementById('params').value));
 		alert("Request Sent");
 		outputResponse(loader)
 	}
@@ -77,7 +77,7 @@ function sendRequestPost(key,value){
 	uid =
 		$.ajax({
 			method: "POST",
-			url: './php/b.2A30_processVertexCat.php',
+			url: './php/b.4A60_processVertexCat.php',
 			data: {uid:E.userid, key: key, value:value},
 			success: function (response) {//response is value returned from php (for your example it's "bye bye"
 				// alert();

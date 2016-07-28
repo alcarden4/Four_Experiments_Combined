@@ -2,7 +2,7 @@
  * Created by Anna Cardenas on 6/16/16.
  * Code based from Yuval Hart.
  */
-/** Experiment for ONE TRIANGLE: Base length of .2 and Angle degree of 30.  */
+/** Experiment for ONE TRIANGLE: Base length of .4 and Angle degree of 45.  */
 
 Global_info = {};
 Global_info.start = Date.now();
@@ -106,7 +106,7 @@ function trainTriangle() {
     // drawing the triangle
     //parameters of the run:
     var LengthAngleSideOrig = 100;
-    var AngleOrig = Math.PI / 4; //Size of angle in radians - 45 deg
+    var AngleOrig = Math.PI / 5; //Size of angle in radians - 36 deg
     var LengthBaseOrig = 600; //Max Base Length
     var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
     var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
@@ -153,7 +153,7 @@ function trainTriangle() {
 
     IncrAng = function () {
         paper2.clear();
-        TriSideYLengthUp = Math.tan(Math.PI / 3) * LengthAngleSideOrig * BaseLengthFactor;
+        TriSideYLengthUp = Math.tan(Math.PI / 4) * LengthAngleSideOrig * BaseLengthFactor;
         DrawTestTriangle(TriBaseXStart, TriBaseXEnd, TriBaseYPos, TriSideXLengthIn, TriSideYLengthUp);
         TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
 
@@ -183,8 +183,8 @@ function drawTriangle() {
 
     var paper = Snap("#triangle").attr({width: "1500", height: "1000"});
 
-    var TriBaseLength = 0.2;
-    var TriBaseAngle = Math.PI / 6;
+    var TriBaseLength = 0.4;
+    var TriBaseAngle = Math.PI / 4;
     var dist = function (pt1, pt2) {
         var dx = pt1.x - pt2.x;
         var dy = pt1.y - pt2.y;
