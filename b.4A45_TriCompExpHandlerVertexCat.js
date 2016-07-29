@@ -13,7 +13,7 @@ Global_info.sideRunNum = 0; //indicates which Triangle configuration side length
 Global_info.angleRunNum = 0; //indicates which Triangle configuration angle size is up next
 Global_info.consent = 0;
 Global_info.comments = 0;
-Global_info.TotRuns = 8;
+Global_info.TotRuns = 9; //extra page
 
 /** Variable that decides which question to ask next (chooses randomly)  */
 Global_info.QuestionNum = 0;
@@ -79,6 +79,7 @@ var Questions = [
 " the " + topCorner + upward_downward];
 
 var Answers = ["smaller", "bigger", "same", "same", "upward", "downward", "upward", "downward"];
+var ExampleQuestion = ["How many corners of the triangle are currently shown?"];
 
 //Create a Random array of runs for this subject, runs #'s go from 1-8
 RunNumOrder = getRandomArray(_.range(0, Global_info.TotRuns), Global_info.TotRuns);
@@ -174,6 +175,103 @@ function trainTriangle() {
 
 };
 
+/** Responding to the Example Page WHAT IM DOING RIGHT NOW */
+function examplePage() {
+    $("#ExamplePage").show();
+
+
+    document.getElementById("exampleQuestion").innerHTML = ExampleQuestion[0];
+
+
+
+
+    var paper2 = Snap("#ExampleTrain").attr({width: "1500", height: "1000"});
+
+    var TriBaseLength = 0.4;
+    var TriBaseAngle = Math.PI / 4;
+    var dist = function (pt1, pt2) {
+        var dx = pt1.x - pt2.x;
+        var dy = pt1.y - pt2.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    // drawing the triangle
+    //parameters of the run:
+    var LengthAngleSideOrig = 100;
+    var AngleOrig = TriBaseAngle;
+    /** Gets question from array of questions. */
+    Global_info.QuestionNum = Global_info.angleRunNum;
+    /** Question is a string of the actual question */
+    var Question = Questions[Math.floor(Global_info.QuestionNum % 8)];
+    /** Answer to the question used for logging */
+    var Answer = Answers[Math.floor(Global_info.QuestionNum % 8)];
+
+    var LengthBaseOrig = 600; //Max Base Length
+    var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
+    var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
+    var BaseLengthFactor = TriBaseLength;
+    // Get the current percent of side length from Global_info.sideRunNum
+    var BaseLength = LengthBaseOrig * BaseLengthFactor;
+    var TriBaseXStart = TriBaseXStartOrig + 0.5 * (1 - BaseLengthFactor) * LengthBaseOrig;
+    var TriBaseXEnd = TriBaseXStart + BaseLength;
+    var TriBaseYPos = LengthBaseOrig - 100;
+    var TriSideXLengthIn = LengthAngleSideOrig * BaseLengthFactor;
+    var TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
+
+
+    //drawing the triangle
+    var triBaseLeft = paper2.line(TriBaseXStart, TriBaseYPos, TriBaseXStart + TriSideXLengthIn * 2, TriBaseYPos).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triBaseRight = paper2.line(TriBaseXEnd, TriBaseYPos, TriBaseXEnd - TriSideXLengthIn * 2, TriBaseYPos).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triRightSide = paper2.line(TriBaseXEnd, TriBaseYPos, TriBaseXEnd - TriSideXLengthIn,
+        TriBaseYPos - TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triLeftSide = paper2.line(TriBaseXStart, TriBaseYPos, TriBaseXStart + TriSideXLengthIn, TriBaseYPos -
+        TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var exampleButton = document.getElementById('ExampleRadio');
+    var exampleButtonElements = exampleButton.getElementsByTagName('input');
+
+
+    //counter button
+    var ButtonX = TriBaseXEndOrig;
+    var ButtonY = TriBaseYPos + 50;
+    var CounterRect = paper2.rect(ButtonX - 20, ButtonY - 540, 160, 30, 5, 5).attr({
+        strokeWidth: 5,
+        stroke: "black", strokeLinecap: "round", fill: "lightblue"
+    });
+    var CounterText = paper2.text(ButtonX, ButtonY - 520, "Triangle: 0");
+    var CounterButton = paper2.g(CounterRect, CounterText);
+
+    // Continue button
+    var ButtonPosX = TriBaseXEndOrig;
+    var ButtonPosY = TriBaseYPos + 50;
+    var NextButtonTxt = paper2.text(ButtonPosX, ButtonPosY, "Continue").attr({fontsize: 50});
+    var NextButtonRect = paper2.rect(ButtonPosX - 20, ButtonPosY - 20, 120, 30, 5, 5).attr({
+        strokeWidth: 5,
+        stroke: "black", strokeLinecap: "round", fill: "lightblue"
+    });
+    var groupButton = paper2.g(NextButtonRect, NextButtonTxt);
+    groupButton.mouseover(function () {
+        this.attr({cursor: 'pointer'});
+    });
+    groupButton.click(function () {
+        // where I want to check that an option has been selected in radio buttons.
+        ExampleContinue();
+    });
+
+
+    for (i = 0; i < exampleButton.length; i++) {
+        exampleButtonElements[i].checked = false;
+    }
+
+
+
+}
+
+
+
+
+
 /** The function that draws the experiment triangles */
 function drawTriangle() {
     //alert('drawTriangle'+Global_info.curPage)
@@ -249,7 +347,7 @@ function drawTriangle() {
         strokeWidth: 5,
         stroke: "black", strokeLinecap: "round", fill: "lightblue"
     });
-    var CounterText = paper.text(ButtonX, ButtonY - 520, "Triangle: " + (Global_info.curPage + 1)).attr({fontsize: 50});
+    var CounterText = paper.text(ButtonX, ButtonY - 520, "Triangle: " + (Global_info.curPage)).attr({fontsize: 50});
     var CounterButton = paper.g(CounterRect, CounterText);
     //
     // CounterButton.mouseover(function () {
@@ -489,7 +587,19 @@ function ContinueButton() {
     else {
         alert('Please click each button so we know you understand exactly what we mean.');
     }
-};
+}
+
+/** Continue function for example page. */
+function ExampleContinue(){
+    if ((document.getElementById('one').checked == true) || (document.getElementById('two').checked == true) ||
+        (document.getElementById('three').checked == true)) {
+        onNext();
+    }
+    else {
+        alert('Please select an answer.');
+    }
+
+}
 
 
 //What to do when people press the Continue button (Instructions,Experiment,Thanks+ID)
@@ -521,12 +631,19 @@ function onNext() {
         trainTriangle();
         $("#TriangleTraining").show();
     }
-    ;
+    // practice page
+    if (Global_info.curPage == 0) {
+        $(".page").hide();
+
+        examplePage();
+
+    }
+
 
 
     // Show participants the triangles
     //(Global_info.curPage<Global_info.TotRuns && Global_info.curPage>=0 && Global_info.consent==1)
-    if ((Global_info.curPage < Global_info.TotRuns && Global_info.curPage >= 0 && Global_info.consent == 1)) {
+    if ((Global_info.curPage < Global_info.TotRuns && Global_info.curPage > 0 && Global_info.consent == 1)) {
 
         Global_info.sideRunNum = RunNumOrder[Global_info.curPage];
         Global_info.angleRunNum = RunNumOrder[Global_info.curPage];

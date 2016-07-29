@@ -2,7 +2,7 @@
  * Created by Anna Cardenas on 6/16/16.
  * Code based from Yuval Hart.
  */
-/** Triangle experiment with triangle of base length factor of 1 and angle 60. */
+/** Experiment for ONE TRIANGLE: Base length of 1 and Angle degree of 60.  */
 
 Global_info = {};
 Global_info.start = Date.now();
@@ -13,7 +13,7 @@ Global_info.sideRunNum = 0; //indicates which Triangle configuration side length
 Global_info.angleRunNum = 0; //indicates which Triangle configuration angle size is up next
 Global_info.consent = 0;
 Global_info.comments = 0;
-Global_info.TotRuns = 8;
+Global_info.TotRuns = 9; //extra page
 
 /** Variable that decides which question to ask next (chooses randomly)  */
 Global_info.QuestionNum = 0;
@@ -54,33 +54,35 @@ var topCorner = "top corner ".bold();
 var Location = "location ".bold(); // added
 
 var Questions = [
-"Imagine we " + increase + "the " + angleSize + "of the bottom two corners by 20%. Will the " + angleSize + "of"
-+ " the " + topCorner + bigger_smaller,
+    "Imagine we " + increase + "the " + angleSize + "of the bottom two corners by 20%. Will the " + angleSize + "of"
+    + " the " + topCorner + bigger_smaller,
 
-"Imagine we " + decrease + "the " + angleSize + "of the bottom two corners by 20%. Will the " + angleSize + "of"
-+ " the " + topCorner + bigger_smaller,
+    "Imagine we " + decrease + "the " + angleSize + "of the bottom two corners by 20%. Will the " + angleSize + "of"
+    + " the " + topCorner + bigger_smaller,
 
-"Imagine we " + increase + "the " + distance + "between the bottom two corners by 20%. Will the "
-+ angleSize + "of the " + topCorner + bigger_smaller,
+    "Imagine we " + increase + "the " + distance + "between the bottom two corners by 20%. Will the "
+    + angleSize + "of the " + topCorner + bigger_smaller,
 
-"Imagine we " + decrease + "the " + distance + "between the bottom two corners by 20%. Will the " + angleSize
-+ "of the " + topCorner + bigger_smaller,
+    "Imagine we " + decrease + "the " + distance + "between the bottom two corners by 20%. Will the " + angleSize
+    + "of the " + topCorner + bigger_smaller,
 
-"Imagine we " + increase + "the " + distance + "between the bottom two corners by 20%. Will the " + Location + "of" +
-" the " + topCorner + upward_downward,
+    "Imagine we " + increase + "the " + distance + "between the bottom two corners by 20%. Will the " + Location + "of" +
+    " the " + topCorner + upward_downward,
 
-"Imagine we " + decrease + "the " + distance +
-"between the bottom two corners by 20%. Will the " + Location + "of the " + topCorner + upward_downward,
+    "Imagine we " + decrease + "the " + distance +
+    "between the bottom two corners by 20%. Will the " + Location + "of the " + topCorner + upward_downward,
 
-"Imagine we " + increase + "the "  + angleSize + "of the bottom two corners by 20%, will the " + Location + "of" +
-" the " + topCorner + upward_downward,
+    "Imagine we " + increase + "the "  + angleSize + "of the bottom two corners by 20%, will the " + Location + "of" +
+    " the " + topCorner + upward_downward,
 
-"Imagine we " + decrease + "the " + angleSize + "of the bottom two corners by 20%. Will the " + Location + "of" +
-" the " + topCorner + upward_downward];
+    "Imagine we " + decrease + "the " + angleSize + "of the bottom two corners by 20%. Will the " + Location + "of" +
+    " the " + topCorner + upward_downward];
 
 var Answers = ["smaller", "bigger", "same", "same", "upward", "downward", "upward", "downward"];
 
-//Create a Random array of runs for this subject, runs #'s go from 1-10
+var ExampleQuestion = ["How many corners of the triangle are currently shown?"];
+
+//Create a Random array of runs for this subject, runs #'s go from 1-8
 RunNumOrder = getRandomArray(_.range(0, Global_info.TotRuns), Global_info.TotRuns);
 
 // A function that shuffles the array
@@ -106,11 +108,11 @@ function trainTriangle() {
     // drawing the triangle
     //parameters of the run:
     var LengthAngleSideOrig = 100;
-    var AngleOrig = Math.PI / 4; //Size of angle in radians - 45 deg
+    var AngleOrig = Math.PI / 5; //Size of angle in radians - 36 deg
     var LengthBaseOrig = 600; //Max Base Length
     var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
     var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
-    var BaseLengthFactor = .7; //Get the current percent of side length from Global_info.sideRunNum
+    var BaseLengthFactor = 0.7;
     var BaseLength = LengthBaseOrig * BaseLengthFactor;
     var TriBaseXStart = TriBaseXStartOrig + 0.5 * (1 - BaseLengthFactor) * LengthBaseOrig;
     var TriBaseXEnd = TriBaseXStart + BaseLength;
@@ -153,7 +155,7 @@ function trainTriangle() {
 
     IncrAng = function () {
         paper2.clear();
-        TriSideYLengthUp = Math.tan(Math.PI / 3) * LengthAngleSideOrig * BaseLengthFactor;
+        TriSideYLengthUp = Math.tan(Math.PI / 4) * LengthAngleSideOrig * BaseLengthFactor;
         DrawTestTriangle(TriBaseXStart, TriBaseXEnd, TriBaseYPos, TriSideXLengthIn, TriSideYLengthUp);
         TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
 
@@ -174,6 +176,101 @@ function trainTriangle() {
 
 };
 
+/** Responding to the Example Page WHAT IM DOING RIGHT NOW */
+function examplePage() {
+    $("#ExamplePage").show();
+
+
+    document.getElementById("exampleQuestion").innerHTML = ExampleQuestion[0];
+
+
+
+
+    var paper2 = Snap("#ExampleTrain").attr({width: "1500", height: "1000"});
+
+    var TriBaseLength = 1;
+    var TriBaseAngle = Math.PI / 3;
+    var dist = function (pt1, pt2) {
+        var dx = pt1.x - pt2.x;
+        var dy = pt1.y - pt2.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    // drawing the triangle
+    //parameters of the run:
+    var LengthAngleSideOrig = 100;
+    var AngleOrig = TriBaseAngle;
+    /** Gets question from array of questions. */
+    Global_info.QuestionNum = Global_info.angleRunNum;
+    /** Question is a string of the actual question */
+    var Question = Questions[Math.floor(Global_info.QuestionNum % 8)];
+    /** Answer to the question used for logging */
+    var Answer = Answers[Math.floor(Global_info.QuestionNum % 8)];
+
+    var LengthBaseOrig = 600; //Max Base Length
+    var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
+    var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
+    var BaseLengthFactor = TriBaseLength;
+    // Get the current percent of side length from Global_info.sideRunNum
+    var BaseLength = LengthBaseOrig * BaseLengthFactor;
+    var TriBaseXStart = TriBaseXStartOrig + 0.5 * (1 - BaseLengthFactor) * LengthBaseOrig;
+    var TriBaseXEnd = TriBaseXStart + BaseLength;
+    var TriBaseYPos = LengthBaseOrig - 100;
+    var TriSideXLengthIn = LengthAngleSideOrig * BaseLengthFactor;
+    var TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
+
+
+    //drawing the triangle
+    var triBaseLeft = paper2.line(TriBaseXStart, TriBaseYPos, TriBaseXStart + TriSideXLengthIn * 2, TriBaseYPos).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triBaseRight = paper2.line(TriBaseXEnd, TriBaseYPos, TriBaseXEnd - TriSideXLengthIn * 2, TriBaseYPos).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triRightSide = paper2.line(TriBaseXEnd, TriBaseYPos, TriBaseXEnd - TriSideXLengthIn,
+        TriBaseYPos - TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triLeftSide = paper2.line(TriBaseXStart, TriBaseYPos, TriBaseXStart + TriSideXLengthIn, TriBaseYPos -
+        TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var exampleButton = document.getElementById('ExampleRadio');
+    var exampleButtonElements = exampleButton.getElementsByTagName('input');
+
+
+    //counter button
+    var ButtonX = TriBaseXEndOrig;
+    var ButtonY = TriBaseYPos + 50;
+    var CounterRect = paper2.rect(ButtonX - 20, ButtonY - 540, 160, 30, 5, 5).attr({
+        strokeWidth: 5,
+        stroke: "black", strokeLinecap: "round", fill: "lightblue"
+    });
+    var CounterText = paper2.text(ButtonX, ButtonY - 520, "Triangle: 0");
+    var CounterButton = paper2.g(CounterRect, CounterText);
+
+    // Continue button
+    var ButtonPosX = TriBaseXEndOrig;
+    var ButtonPosY = TriBaseYPos + 50;
+    var NextButtonTxt = paper2.text(ButtonPosX, ButtonPosY, "Continue").attr({fontsize: 50});
+    var NextButtonRect = paper2.rect(ButtonPosX - 20, ButtonPosY - 20, 120, 30, 5, 5).attr({
+        strokeWidth: 5,
+        stroke: "black", strokeLinecap: "round", fill: "lightblue"
+    });
+    var groupButton = paper2.g(NextButtonRect, NextButtonTxt);
+    groupButton.mouseover(function () {
+        this.attr({cursor: 'pointer'});
+    });
+    groupButton.click(function () {
+        // where I want to check that an option has been selected in radio buttons.
+        ExampleContinue();
+    });
+
+
+    for (i = 0; i < exampleButton.length; i++) {
+        exampleButtonElements[i].checked = false;
+    }
+
+
+
+}
+
+
+
 /** The function that draws the experiment triangles */
 function drawTriangle() {
     //alert('drawTriangle'+Global_info.curPage)
@@ -190,19 +287,6 @@ function drawTriangle() {
         var dy = pt1.y - pt2.y;
         return Math.sqrt(dx * dx + dy * dy);
     };
-
-    // var LengthAngleSideOrig = 100;
-    // var AngleOrig = Math.PI / 3; //Size of angle in radians - 60 deg
-    // var LengthBaseOrig = 600; //Max Base Length
-    // var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
-    // var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
-    // var BaseLengthFactor = 1; //Get the current percent of side length from Global_info.sideRunNum
-    // var BaseLength = LengthBaseOrig * BaseLengthFactor;
-    // var TriBaseXStart = TriBaseXStartOrig + 0.5 * (1 - BaseLengthFactor) * LengthBaseOrig;
-    // var TriBaseXEnd = TriBaseXStart + BaseLength;
-    // var TriBaseYPos = 100;
-    // var TriSideXLengthIn = LengthAngleSideOrig * BaseLengthFactor;
-    // var TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
 
     // drawing the triangle
     //parameters of the run:
@@ -262,8 +346,22 @@ function drawTriangle() {
         strokeWidth: 5,
         stroke: "black", strokeLinecap: "round", fill: "lightblue"
     });
-    var CounterText = paper.text(ButtonX, ButtonY - 520, "Triangle: " + (Global_info.curPage + 1)).attr({fontsize: 50});
+    var CounterText = paper.text(ButtonX, ButtonY - 520, "Triangle: " + (Global_info.curPage)).attr({fontsize: 50});
     var CounterButton = paper.g(CounterRect, CounterText);
+    //
+    // CounterButton.mouseover(function () {
+    //     this.attr({cursor: 'pointer'});
+    // });
+
+
+    // var groupButton = paper.g(CounterRect, CounterText);
+    // groupButton.mouseover(function () {
+    //     this.attr({cursor: 'pointer'});
+    // });
+
+
+
+
 
     /** Switches to the correct radio buttons. */
     var angleButton = document.getElementById('angleRadio');
@@ -332,7 +430,20 @@ function drawTriangle() {
             alert('Please select an answer before continuing.');
         }
 
-        /** Deselect all buttons */
+
+
+
+        //Measuring the time it took the subject to solve the last page
+        // Global_info.end = Date.now();
+        // var timeRound = Global_info.end - Global_info.start;
+        // var logInfo = 'Run' + Global_info.curPage + '_' + Global_info.setup + '_Time_' + timeRound + '_UserResponse_'
+        //     + Global_info.userResponse;
+        // //alert(logInfo)
+        // sendRequestPost('data', logInfo);
+        // Global_info.start = Date.now();
+
+
+        /** deselect all buttons */
         for (i = 0; i < angleButtonElements.length; i++) {
             angleButtonElements[i].checked = false;
             vertexButtonElements[i].checked = false;
@@ -351,12 +462,11 @@ function submit_demographis() {
     if (gender == '' || age == '' || education == '') {
         return false;
     }
-
     if (isNaN(age) == true || isNaN(education) == true) {
         alert("Please enter a number value for age and education.");
         return none;
     }
-        
+
     else {
         sendRequestPost('gender', gender);
         sendRequestPost('age', age);
@@ -478,6 +588,18 @@ function ContinueButton() {
     }
 };
 
+/** Continue function for example page. */
+function ExampleContinue(){
+    if ((document.getElementById('one').checked == true) || (document.getElementById('two').checked == true) ||
+        (document.getElementById('three').checked == true)) {
+        onNext();
+    }
+    else {
+        alert('Please select an answer.');
+    }
+
+}
+
 
 //What to do when people press the Continue button (Instructions,Experiment,Thanks+ID)
 function onNext() {
@@ -508,12 +630,18 @@ function onNext() {
         trainTriangle();
         $("#TriangleTraining").show();
     }
+    if (Global_info.curPage == 0) {
+        $(".page").hide();
+
+        examplePage();
+
+    }
     ;
 
 
     // Show participants the triangles
     //(Global_info.curPage<Global_info.TotRuns && Global_info.curPage>=0 && Global_info.consent==1)
-    if ((Global_info.curPage < Global_info.TotRuns && Global_info.curPage >= 0 && Global_info.consent == 1)) {
+    if ((Global_info.curPage < Global_info.TotRuns && Global_info.curPage > 0 && Global_info.consent == 1)) {
 
         Global_info.sideRunNum = RunNumOrder[Global_info.curPage];
         Global_info.angleRunNum = RunNumOrder[Global_info.curPage];
@@ -523,7 +651,7 @@ function onNext() {
         var timeRound = Global_info.end - Global_info.start;
         var logInfo = 'Run' + Global_info.curPage + '_' + Global_info.setup + '_Time_' + timeRound + '_UserResponse_'
             + Global_info.userResponse;
-        //alert(logInfo)
+        // alert(logInfo); //me
         sendRequestPost('data', logInfo);
         Global_info.start = Date.now();
 
