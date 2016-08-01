@@ -79,7 +79,8 @@ var Questions = [
     " the " + topCorner + upward_downward];
 
 var Answers = ["smaller", "bigger", "same", "same", "upward", "downward", "upward", "downward"];
-var ExampleQuestion = ["How many corners of the triangle are currently shown?"];
+var ExampleQuestion = ["With the two bottom corners of the triangle being identical, which leg of the " +
+" bottom two corners is longer?"];
 
 //Create a Random array of runs for this subject, runs #'s go from 1-8
 RunNumOrder = getRandomArray(_.range(0, Global_info.TotRuns), Global_info.TotRuns);
@@ -591,8 +592,8 @@ function ContinueButton() {
 
 /** Continue function for example page. */
 function ExampleContinue(){
-    if ((document.getElementById('one').checked == true) || (document.getElementById('two').checked == true) ||
-        (document.getElementById('three').checked == true)) {
+    if ((document.getElementById('top').checked == true) || (document.getElementById('bottom').checked == true) ||
+        (document.getElementById('sameSize').checked == true)) {
         onNext();
     }
     else {
@@ -653,7 +654,7 @@ function onNext() {
         var timeRound = Global_info.end - Global_info.start;
         var logInfo = 'Run' + Global_info.curPage + '_' + Global_info.setup + '_Time_' + timeRound + '_UserResponse_'
             + Global_info.userResponse;
-        //alert(logInfo)
+        // alert(logInfo);
         sendRequestPost('data', logInfo);
         Global_info.start = Date.now();
 
