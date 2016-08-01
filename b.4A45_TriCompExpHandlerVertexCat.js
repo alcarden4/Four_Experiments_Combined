@@ -79,8 +79,8 @@ var Questions = [
 " the " + topCorner + upward_downward];
 
 var Answers = ["smaller", "bigger", "same", "same", "upward", "downward", "upward", "downward"];
-var ExampleQuestion = ["With the two bottom corners of the triangle being identical, which leg of the " +
-" bottom two corners is longer?"];
+var ExampleQuestion = ["Consider the right bottom corner of the triangle. Is the upper leg of this corner longer," +
+" shorter or the same size as the lower leg of this corner?"];
 
 //Create a Random array of runs for this subject, runs #'s go from 1-8
 RunNumOrder = getRandomArray(_.range(0, Global_info.TotRuns), Global_info.TotRuns);
@@ -592,7 +592,7 @@ function ContinueButton() {
 
 /** Continue function for example page. */
 function ExampleContinue(){
-    if ((document.getElementById('top').checked == true) || (document.getElementById('bottom').checked == true) ||
+    if ((document.getElementById('longer').checked == true) || (document.getElementById('shorter').checked == true) ||
         (document.getElementById('sameSize').checked == true)) {
         onNext();
     }
