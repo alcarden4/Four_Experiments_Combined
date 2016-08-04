@@ -34,7 +34,7 @@
         <u><b>Why we are doing this research:</b></u> In this project, we aim to study how people understand the
         manipulation of a triangle's top corner location and angle size when given information about the other
         two bottom corners. <br>
-        With this data we hope to learn more about the innate geometry intuitions we have and the mechanisms we use to
+        With this data we hope to learn more about the innate geometric intuitions we have and the mechanisms we use to
         employ them.
     </p>
     <p>
@@ -155,16 +155,18 @@
 
     <p>
         Welcome! <br>
-        This study examines how people judge shape changes in triangles. Specifically, how might changes to the
-        distance between the bottom two corners of a triangle or to their angle sizes affect the third corner?<br>
+        This study examines how people judge shape changes in triangles. Specifically, we ask how might changes to the
+        distance between the bottom two corners of a triangle affect the third corner or how might changes to the angle
+        sizes of the bottom two corners of a triangle affect the third corner?<br>
 
     <h2> Procedure: </h2>
 
     <b>Please do the entire survey in one sitting.</b>
-    First, read the description indicating a change to the bottom two corners of the triangle that is displayed
+    First, read the description indicating a change to the bottom two corners of the triangle displayed
     on the screen.
     Then, select the multiple choice response that accurately reflects what happens to the third corner as a result.
-    Please try to be as accurate as possible and answer the questions to the best of your ability.
+    Please try to be as accurate as possible and answer the questions as quickly as you can, to the best of your
+    ability.
     When you're done with each question, please press the "Continue” button to move to the next question.
     <br>The experiment takes around 10 minutes. At the end of the experiment you'll be provided with a user
     ID code that you should enter back in mTURK.<br>
@@ -197,16 +199,15 @@
         triangle  or increasing/decreasing the angle size of the bottom two corners. <br>
         Please press and hold each button on the right to view how the distances or the angle sizes change given each
         type of verbal instruction. Each change is made with reference to the initial triangle shown, so you can
-        toggle between the change and the original triangle by pressing the button multiple times. You will see a
-        variety of initial triangles from which to imagine a change during the course of the experiment.
+        toggle between the change and the original triangle by pressing the button multiple times.
         <br>
     </p>
 
     <svg id="IncreaseDistanceButton" width="1000" height="100" version="1.1" xmlns="http://www.w3.org/2000/svg">
         <g id='Button1' cursor="pointer" onmousedown="increaseDist();" onmouseup="originalButton();">
             <rect  x="800" y="20" rx="5" ry="5" width="160" height="30" stroke="black"
-                  fill="lightblue"
-                  stroke-width="5"></rect>
+                   fill="lightblue"
+                   stroke-width="5"></rect>
             <text x="820" y="40" font-size="13">Increase Distance</text>
         </g>
 
@@ -245,9 +246,7 @@
     </svg>
     <svg id='triangleTrain'></svg>
 
-
 </div>
-
 
 <div id="ExamplePage" class="page">
 
@@ -269,16 +268,18 @@
 </div>
 
 
+
+
 <div id="TriangleManipulationPages" class="page">
 
     <p id = "question"></p>
 
     <p id = "angleRadio" >
-            <input type="radio" name="action" id="bigger" value="bigger" /><label for="bigger">Get Bigger
-        </label><br />
-            <input type="radio" name="action" id="smaller" value="smaller"  /><label for="smaller">Get Smaller
-        </label><br />
-            <input type="radio" name="action" id="same" value="same" /><label for="same">Stay the same
+        <input type="radio" name="action" id="bigger" value="bigger" /><label for="bigger">Get Bigger
+    </label><br />
+        <input type="radio" name="action" id="smaller" value="smaller"  /><label for="smaller">Get Smaller
+    </label><br />
+        <input type="radio" name="action" id="same" value="same" /><label for="same">Stay the same
         size</label><br />
     </p>
 
