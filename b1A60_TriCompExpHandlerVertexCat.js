@@ -13,7 +13,7 @@ Global_info.sideRunNum = 0; //indicates which Triangle configuration side length
 Global_info.angleRunNum = 0; //indicates which Triangle configuration angle size is up next
 Global_info.consent = 0;
 Global_info.comments = 0;
-Global_info.TotRuns = 9; //extra page
+Global_info.TotRuns = 10; // 2 extra pages
 
 /** Variable that decides which question to ask next (chooses randomly)  */
 Global_info.QuestionNum = 0;
@@ -80,8 +80,8 @@ var Questions = [
 
 var Answers = ["smaller", "bigger", "same", "same", "upward", "downward", "upward", "downward"];
 
-var ExampleQuestion = ["Consider the right bottom corner of the triangle. Is the upper leg of this corner longer," +
-" shorter or the same size as the lower leg of this corner?"];
+var ExampleQuestion = ["Which dot represents the correct location for the top vertex of the triangle?", "Which angle " +
+"represents the correct top angle for the triangle?"];
 
 //Create a Random array of runs for this subject, runs #'s go from 1-8
 RunNumOrder = getRandomArray(_.range(0, Global_info.TotRuns), Global_info.TotRuns);
@@ -118,16 +118,16 @@ function trainTriangle() {
     var TriBaseXStart = TriBaseXStartOrig + 0.5 * (1 - BaseLengthFactor) * LengthBaseOrig;
     var TriBaseXEnd = TriBaseXStart + BaseLength;
     var TriBaseYPos = 100;
-    var TriSideXLengthIn = LengthAngleSideOrig * BaseLengthFactor;
-    var TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
+    var TriSideXLengthIn = LengthAngleSideOrig * Math.cos(AngleOrig);
+    var TriSideYLengthUp = Math.sin(AngleOrig) * LengthAngleSideOrig;
 
 
     //drawing the triangle
     function DrawTestTriangle(tri_base_x_start, tri_base_x_end, tri_base_y_pos, tri_side_x_len, tri_side_y_len) {
         var triBaseLeft = paper2.line(tri_base_x_start, tri_base_y_pos, tri_base_x_start +
-            tri_side_x_len * 2, tri_base_y_pos).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+            LengthAngleSideOrig * 1.5, tri_base_y_pos).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
         var triBaseRight = paper2.line(tri_base_x_end, tri_base_y_pos, tri_base_x_end -
-            tri_side_x_len * 2, tri_base_y_pos).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+            LengthAngleSideOrig * 1.5, tri_base_y_pos).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
         var triRightSide = paper2.line(tri_base_x_end, tri_base_y_pos, tri_base_x_end -
             tri_side_x_len, tri_base_y_pos - tri_side_y_len).attr({
             strokeWidth: 5,
@@ -156,7 +156,9 @@ function trainTriangle() {
 
     IncrAng = function () {
         paper2.clear();
-        TriSideYLengthUp = Math.tan(Math.PI / 4) * LengthAngleSideOrig * BaseLengthFactor;
+        var TriSideXLengthIn = LengthAngleSideOrig * Math.cos(Math.PI / 4);
+        var TriSideYLengthUp = Math.sin(Math.PI / 4) * LengthAngleSideOrig;
+        //TriSideYLengthUp = Math.tan(Math.PI / 4) * LengthAngleSideOrig * BaseLengthFactor;
         DrawTestTriangle(TriBaseXStart, TriBaseXEnd, TriBaseYPos, TriSideXLengthIn, TriSideYLengthUp);
         TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
 
@@ -164,7 +166,9 @@ function trainTriangle() {
 
     DecrAng = function () {
         paper2.clear();
-        TriSideYLengthUp = Math.tan(Math.PI / 6) * LengthAngleSideOrig * BaseLengthFactor;
+        var TriSideXLengthIn = LengthAngleSideOrig * Math.cos(Math.PI / 6);
+        var TriSideYLengthUp = Math.sin(Math.PI / 6) * LengthAngleSideOrig;
+        //TriSideYLengthUp = Math.tan(Math.PI / 6) * LengthAngleSideOrig * BaseLengthFactor;
         DrawTestTriangle(TriBaseXStart, TriBaseXEnd, TriBaseYPos, TriSideXLengthIn, TriSideYLengthUp);
         TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
     };
@@ -174,23 +178,22 @@ function trainTriangle() {
         DrawTestTriangle(TriBaseXStart, TriBaseXEnd, TriBaseYPos, TriSideXLengthIn, TriSideYLengthUp);
     }
 
-
 };
 
-/** Responding to the Example Page WHAT IM DOING RIGHT NOW */
-function examplePage() {
-    $("#ExamplePage").show();
+/** Responding to the Example Page 0 */
+function examplePage0() {
+    $("#ExamplePage0").show();
 
 
-    document.getElementById("exampleQuestion").innerHTML = ExampleQuestion[0];
+    document.getElementById("exampleQuestion0").innerHTML = ExampleQuestion[0];
 
 
 
 
-    var paper2 = Snap("#ExampleTrain").attr({width: "1500", height: "1000"});
+    var paper2 = Snap("#ExampleTrain0").attr({width: "1500", height: "1000"});
 
     var TriBaseLength = 1;
-    var TriBaseAngle = Math.PI / 3;
+    var TriBaseAngle = Math.PI / 3; // 60 degrees
     var dist = function (pt1, pt2) {
         var dx = pt1.x - pt2.x;
         var dy = pt1.y - pt2.y;
@@ -203,10 +206,6 @@ function examplePage() {
     var AngleOrig = TriBaseAngle;
     /** Gets question from array of questions. */
     Global_info.QuestionNum = Global_info.angleRunNum;
-    /** Question is a string of the actual question */
-    var Question = Questions[Math.floor(Global_info.QuestionNum % 8)];
-    /** Answer to the question used for logging */
-    var Answer = Answers[Math.floor(Global_info.QuestionNum % 8)];
 
     var LengthBaseOrig = 600; //Max Base Length
     var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
@@ -230,19 +229,19 @@ function examplePage() {
         TriBaseYPos - TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
     var triLeftSide = paper2.line(TriBaseXStart, TriBaseYPos, TriBaseXStart + TriSideXLengthIn, TriBaseYPos -
         TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
-    var exampleButton = document.getElementById('ExampleRadio');
+    var exampleButton = document.getElementById('ExampleRadio0');
     var exampleButtonElements = exampleButton.getElementsByTagName('input');
 
 
-    //counter button
-    var ButtonX = TriBaseXEndOrig;
-    var ButtonY = TriBaseYPos + 50;
-    var CounterRect = paper2.rect(ButtonX - 20, ButtonY - 540, 160, 30, 5, 5).attr({
-        strokeWidth: 5,
-        stroke: "black", strokeLinecap: "round", fill: "lightblue"
-    });
-    var CounterText = paper2.text(ButtonX, ButtonY - 520, "Triangle: 0");
-    var CounterButton = paper2.g(CounterRect, CounterText);
+    // //counter button
+    // var ButtonX = TriBaseXEndOrig;
+    // var ButtonY = TriBaseYPos + 50;
+    // var CounterRect = paper2.rect(ButtonX - 20, ButtonY - 540, 160, 30, 5, 5).attr({
+    //     strokeWidth: 5,
+    //     stroke: "black", strokeLinecap: "round", fill: "lightblue"
+    // });
+    // var CounterText = paper2.text(ButtonX, ButtonY - 520, "Triangle: 0");
+    // var CounterButton = paper2.g(CounterRect, CounterText);
 
     // Continue button
     var ButtonPosX = TriBaseXEndOrig;
@@ -265,10 +264,132 @@ function examplePage() {
     for (i = 0; i < exampleButton.length; i++) {
         exampleButtonElements[i].checked = false;
     }
+    
+    var falsePosition = paper2.circle(TriBaseXStart+0.5*BaseLength, (TriBaseYPos-0.5*BaseLength) - 80, 5).attr({fill:"red"});
+    var labelA = paper2.text((TriBaseXStart+0.5*BaseLength) + 10, (TriBaseYPos-0.5*BaseLength) - 75, "A");
+    var falsePosition2 = paper2.circle(TriBaseXStart+0.5*BaseLength, (TriBaseYPos-0.5*BaseLength) - 50,5).attr({fill:"black"});
+    var labelB = paper2.text((TriBaseXStart+0.5*BaseLength) + 10, (TriBaseYPos-0.5*BaseLength) - 45, "B");
+    var realPosition=paper2.circle(TriBaseXStart+0.5*BaseLength,TriBaseYPos-0.5*BaseLength,5).attr({fill:"blue"});
+    var labelC = paper2.text((TriBaseXStart+0.5*BaseLength) + 10,(TriBaseYPos-0.5*BaseLength) + 5, "C");
+
 
 
 
 }
+
+/** Function for example page 1  */
+function examplePage1() {
+    $("#ExamplePage1").show();
+
+
+    document.getElementById("exampleQuestion1").innerHTML = ExampleQuestion[1];
+
+
+    var paper3 = Snap("#ExampleTrain1").attr({width: "1500", height: "1000"});
+
+    var TriBaseLength = 1;
+    var TriBaseAngle = Math.PI / 3; //60 degrees
+    var dist = function (pt1, pt2) {
+        var dx = pt1.x - pt2.x;
+        var dy = pt1.y - pt2.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    // drawing the triangle
+    //parameters of the run:
+    var LengthAngleSideOrig = 100;
+    var AngleOrig = TriBaseAngle;
+    /** Gets question from array of questions. */
+    Global_info.QuestionNum = Global_info.angleRunNum;
+
+    var LengthBaseOrig = 600; //Max Base Length
+    var TriBaseXStartOrig = 150; //Origin position in the X axis for maximal base length
+    var TriBaseXEndOrig = LengthBaseOrig + TriBaseXStartOrig; //End position of base for maximal base length
+    var BaseLengthFactor = TriBaseLength;
+    // Get the current percent of side length from Global_info.sideRunNum
+    var BaseLength = LengthBaseOrig * BaseLengthFactor;
+    var TriBaseXStart = TriBaseXStartOrig + 0.5 * (1 - BaseLengthFactor) * LengthBaseOrig;
+    var TriBaseXEnd = TriBaseXStart + BaseLength;
+    var TriBaseYPos = LengthBaseOrig - 100;
+    var TriSideXLengthIn = LengthAngleSideOrig * BaseLengthFactor;
+    var TriSideYLengthUp = Math.tan(AngleOrig) * LengthAngleSideOrig * BaseLengthFactor;
+
+
+    //drawing the triangle
+    var triBaseLeft = paper3.line(TriBaseXStart, TriBaseYPos, TriBaseXStart + TriSideXLengthIn * 2, TriBaseYPos).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triBaseRight = paper3.line(TriBaseXEnd, TriBaseYPos, TriBaseXEnd - TriSideXLengthIn * 2, TriBaseYPos).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triRightSide = paper3.line(TriBaseXEnd, TriBaseYPos, TriBaseXEnd - TriSideXLengthIn,
+        TriBaseYPos - TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triLeftSide = paper3.line(TriBaseXStart, TriBaseYPos, TriBaseXStart + TriSideXLengthIn, TriBaseYPos -
+        TriSideYLengthUp).attr({strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var exampleButton = document.getElementById('ExampleRadio1');
+    var exampleButtonElements = exampleButton.getElementsByTagName('input');
+
+    // drawing the other angles
+    // 60 degree angle
+    var triALeft = paper3.line(TriBaseXStart - 100, TriBaseYPos - 400, TriBaseXStart - 100 + TriSideXLengthIn,
+        (TriBaseYPos - 400) - Math.cos(Math.PI / 3) * LengthAngleSideOrig * BaseLengthFactor).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+
+    var triARight = paper3.line(TriBaseXStart - 100 + TriSideXLengthIn, (TriBaseYPos - 400) - Math.cos(Math.PI / 3)
+        * LengthAngleSideOrig * BaseLengthFactor, TriBaseXStart + 80, TriBaseYPos - 400).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var labelA = paper3.text(TriBaseXStart - 100, TriBaseYPos - 380, "A");
+
+    // 30 degree angle
+    var triBLeft = paper3.line(TriBaseXStart + 120, TriBaseYPos - 400, TriBaseXStart + 120 + TriSideXLengthIn,
+        (TriBaseYPos - 400) - Math.cos(Math.PI / 2.5) * LengthAngleSideOrig * BaseLengthFactor).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triBRight = paper3.line(TriBaseXStart + 120 + TriSideXLengthIn,
+        (TriBaseYPos - 400) - Math.cos(Math.PI / 2.5) * LengthAngleSideOrig * BaseLengthFactor, TriBaseXStart + 300, TriBaseYPos - 400).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var labelB = paper3.text(TriBaseXStart + 120, TriBaseYPos - 380, "B");
+
+
+    // 90 degree angle
+    var triCLeft = paper3.line(TriBaseXStart + 350, TriBaseYPos - 400, TriBaseXStart + 350 + TriSideXLengthIn,
+        (TriBaseYPos - 400) - Math.cos(Math.PI / 6) * LengthAngleSideOrig * BaseLengthFactor).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var triCRight = paper3.line(TriBaseXStart + 350 + TriSideXLengthIn,
+        (TriBaseYPos - 400) - Math.cos(Math.PI / 6) * LengthAngleSideOrig * BaseLengthFactor, TriBaseXStart + 530, TriBaseYPos - 400).attr(
+        {strokeWidth: 5, stroke: "black", strokeLinecap: "round"});
+    var labelA = paper3.text(TriBaseXStart + 350, TriBaseYPos - 380, "C");
+
+    // //counter button
+    // var ButtonX = TriBaseXEndOrig;
+    // var ButtonY = TriBaseYPos + 50;
+    // var CounterRect = paper3.rect(ButtonX - 20, ButtonY - 540, 160, 30, 5, 5).attr({
+    //     strokeWidth: 5,
+    //     stroke: "black", strokeLinecap: "round", fill: "lightblue"
+    // });
+    // var CounterText = paper3.text(ButtonX, ButtonY - 520, "Triangle: 1");
+    // var CounterButton = paper3.g(CounterRect, CounterText);
+
+    // Continue button
+    var ButtonPosX = TriBaseXEndOrig;
+    var ButtonPosY = TriBaseYPos + 50;
+    var NextButtonTxt = paper3.text(ButtonPosX, ButtonPosY, "Begin").attr({fontsize: 50});
+    var NextButtonRect = paper3.rect(ButtonPosX - 20, ButtonPosY - 20, 120, 30, 5, 5).attr({
+        strokeWidth: 5,
+        stroke: "black", strokeLinecap: "round", fill: "lightblue"
+    });
+    var groupButton = paper3.g(NextButtonRect, NextButtonTxt);
+    groupButton.mouseover(function () {
+        this.attr({cursor: 'pointer'});
+    });
+    groupButton.click(function () {
+        // where I want to check that an option has been selected in radio buttons.
+        ExampleContinue1();
+    });
+
+
+    for (i = 0; i < exampleButton.length; i++) {
+        exampleButtonElements[i].checked = false;
+    }
+}
+
 
 
 
@@ -347,7 +468,7 @@ function drawTriangle() {
         strokeWidth: 5,
         stroke: "black", strokeLinecap: "round", fill: "lightblue"
     });
-    var CounterText = paper.text(ButtonX, ButtonY - 520, "Triangle: " + (Global_info.curPage)).attr({fontsize: 50});
+    var CounterText = paper.text(ButtonX, ButtonY - 520, "Triangle: " + (Global_info.curPage - 1)).attr({fontsize: 50});
     var CounterButton = paper.g(CounterRect, CounterText);
     //
     // CounterButton.mouseover(function () {
@@ -591,8 +712,20 @@ function ContinueButton() {
 
 /** Continue function for example page. */
 function ExampleContinue(){
-    if ((document.getElementById('longer').checked == true) || (document.getElementById('shorter').checked == true) ||
-        (document.getElementById('sameSize').checked == true)) {
+    if ((document.getElementById('A').checked == true) || (document.getElementById('B').checked == true) ||
+        (document.getElementById('C').checked == true)) {
+        onNext();
+    }
+    else {
+        alert('Please select an answer.');
+    }
+
+}
+
+/** Continue function for second example page 1. */
+function ExampleContinue1(){
+    if ((document.getElementById('A_').checked == true) || (document.getElementById('B_').checked == true) ||
+        (document.getElementById('C_').checked == true)) {
         onNext();
     }
     else {
@@ -634,7 +767,13 @@ function onNext() {
     if (Global_info.curPage == 0) {
         $(".page").hide();
 
-        examplePage();
+        examplePage0();
+
+    }
+    if (Global_info.curPage == 1) {
+        $(".page").hide();
+
+        examplePage1();
 
     }
     ;
@@ -642,7 +781,7 @@ function onNext() {
 
     // Show participants the triangles
     //(Global_info.curPage<Global_info.TotRuns && Global_info.curPage>=0 && Global_info.consent==1)
-    if ((Global_info.curPage < Global_info.TotRuns && Global_info.curPage > 0 && Global_info.consent == 1)) {
+    if ((Global_info.curPage < Global_info.TotRuns && Global_info.curPage > 1 && Global_info.consent == 1)) {
 
         Global_info.sideRunNum = RunNumOrder[Global_info.curPage];
         Global_info.angleRunNum = RunNumOrder[Global_info.curPage];
